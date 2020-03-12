@@ -313,7 +313,7 @@ void QuadEstimatorEKF::UpdateFromGPS(V3F pos, V3F vel)
   }
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
-  //Update(z, hPrime, R_GPS, zFromX);
+  Update(z, hPrime, R_GPS, zFromX);
 }
 
 void QuadEstimatorEKF::UpdateFromMag(float magYaw)
@@ -358,7 +358,6 @@ void QuadEstimatorEKF::UpdateFromMag(float magYaw)
 // zFromX: measurement prediction based on current state
 void QuadEstimatorEKF::Update(VectorXf& z, MatrixXf& H, MatrixXf& R, VectorXf& zFromX)
 {
-    return;
   assert(z.size() == H.rows());
   assert(QUAD_EKF_NUM_STATES == H.cols());
   assert(z.size() == R.rows());
