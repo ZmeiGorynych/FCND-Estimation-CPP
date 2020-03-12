@@ -22,7 +22,7 @@ QuadControlParams.Trajectory=traj/Square.txt
 #                                    #
 ######################################
 
-Quad.UseIdealEstimator = 1
+Quad.UseIdealEstimator = 0
 SimIMU.AccelStd = 0,0,0
 SimIMU.GyroStd = 0,0,0
 
@@ -36,6 +36,13 @@ Commands += Plot(1,Quad.Pos.Y,"true Y")
 Commands += Plot(1,Quad.Est.Y,"est Y")
 Commands += Plot(1,Quad.Vel.Y,"true vY")
 Commands += Plot(1,Quad.Est.VY,"est vY")
+
+#Commands += SetTitle(3,"Z Pos/Vel: True vs Predicted")
+#Commands += Plot(3,Quad.Pos.Z,"true Z")
+#Commands += Plot(3,Quad.Est.E.Z,"est Z")
+#Commands += Plot(3,Quad.Vel.Z,"true vZ")
+#Commands += Plot(3,Quad.Est.E.VZ,"est vZ")
+
 
 Commands += SetTitle(2,"Pos error vs Z std")
 Commands += AddGraph2.Quad.Est.E.Pos

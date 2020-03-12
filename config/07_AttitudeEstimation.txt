@@ -6,7 +6,7 @@ INCLUDE QuadEstimatorEKF.txt
 
 # Basic Simulation Setup
 Sim.RunMode = Repeat
-Sim.EndTime = 4
+Sim.EndTime = 8
 Sim.Vehicle1 = Quad
 
 # Controller selection

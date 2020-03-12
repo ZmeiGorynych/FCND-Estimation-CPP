@@ -223,8 +223,8 @@ MatrixXf QuadEstimatorEKF::GetRbgPrime(float roll, float pitch, float yaw)
   RbgPrime(1, 0) = cos(theta) * cos(psi);
   RbgPrime(0, 1) = -sin(phi) * sin(theta) * sin(psi) - cos(phi)*cos(psi);
   RbgPrime(1, 1) = sin(phi) * sin(theta) * cos(psi) - cos(phi) * sin(psi);
-  RbgPrime(2, 0) = -cos(phi) * sin(theta) * sin(psi) + sin(phi) * cos(psi);
-  RbgPrime(2, 1) = cos(phi) * sin(theta) * cos(psi) + sin(phi) * sin(psi);
+  RbgPrime(0, 2) = -cos(phi) * sin(theta) * sin(psi) + sin(phi) * cos(psi);
+  RbgPrime(1, 2) = cos(phi) * sin(theta) * cos(psi) + sin(phi) * sin(psi);
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -274,12 +274,13 @@ void QuadEstimatorEKF::Predict(float dt, V3F accel, V3F gyro)
   for (int i = 0; i < 3; i++)
       u(i) = accel[i];
 
-  auto offset = RbgPrime * u;
+  auto offset = RbgPrime * u * dt;
 
   for (int i = 0; i < 3; i++){
       gPrime(i, i + 3) = dt;
-      gPrime(i+ 3, 6) = u(i);
+      gPrime(i+ 3, 6) = offset(i);
   }
+
 
   auto newCov = gPrime * ekfCov * (gPrime.transpose()) + Q;
   ekfCov = newCov;
@@ -312,7 +313,7 @@ void QuadEstimatorEKF::UpdateFromGPS(V3F pos, V3F vel)
   }
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
-  Update(z, hPrime, R_GPS, zFromX);
+  //Update(z, hPrime, R_GPS, zFromX);
 }
 
 void QuadEstimatorEKF::UpdateFromMag(float magYaw)
@@ -341,7 +342,7 @@ void QuadEstimatorEKF::UpdateFromMag(float magYaw)
 
   z(0) = magYaw;
 
-  std::cout << yawEst <<"   " << magYaw << "   " << magYaw - yawEst << endl;
+  //std::cout << yawEst <<"   " << magYaw << "   " << magYaw - yawEst << endl;
   
   ekfState(6) = yawEst;
   zFromX(0) = yawEst;
@@ -357,6 +358,7 @@ void QuadEstimatorEKF::UpdateFromMag(float magYaw)
 // zFromX: measurement prediction based on current state
 void QuadEstimatorEKF::Update(VectorXf& z, MatrixXf& H, MatrixXf& R, VectorXf& zFromX)
 {
+    return;
   assert(z.size() == H.rows());
   assert(QUAD_EKF_NUM_STATES == H.cols());
   assert(z.size() == R.rows());
